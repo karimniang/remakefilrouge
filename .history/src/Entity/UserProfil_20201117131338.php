@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=UserProfilRepository::class)
  * @ApiResource(
- *  itemOperations={"get","put"}
+ *  itemOperations={"get","put"} 
  * )
  * @UniqueEntity(
  *  fields={"libelle"},

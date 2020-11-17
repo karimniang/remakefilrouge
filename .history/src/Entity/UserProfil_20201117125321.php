@@ -7,17 +7,12 @@ use App\Repository\UserProfilRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass=UserProfilRepository::class)
  * @ApiResource(
- *  itemOperations={"get","put"}
+ * 
  * )
- * @UniqueEntity(
- *  fields={"libelle"},
- *  message="Le libelle existe déjà."
- * )
+ * @ORM\Entity(repositoryClass=UserProfilRepository::class)
  */
 class UserProfil
 {
@@ -37,11 +32,6 @@ class UserProfil
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="profil")
      */
     private $users;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $deleted = false;
 
     public function __construct()
     {
@@ -91,18 +81,6 @@ class UserProfil
                 $user->setProfil(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getDeleted(): ?bool
-    {
-        return $this->deleted;
-    }
-
-    public function setDeleted(bool $deleted): self
-    {
-        $this->deleted = $deleted;
 
         return $this;
     }
