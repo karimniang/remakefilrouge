@@ -12,10 +12,5 @@ use ApiPlatform\Core\Annotation\ApiResource;
  */
 class Admin extends User
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
    
 }

@@ -6,9 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserProfilRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -36,13 +34,11 @@ class UserProfil
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Le libellé est obligatoire.")
      */
     private $libelle;
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="profil")
-     * @ApiSubresource
      */
     private $users;
 

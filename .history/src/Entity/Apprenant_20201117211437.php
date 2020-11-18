@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\CMRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ApprenantRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ApiResource()
- * @ORM\Entity(repositoryClass=CMRepository::class)
+ * @ORM\Entity(repositoryClass=ApprenantRepository::class)
  */
-class CM extends User
+class Apprenant extends User
 {
     /**
      * @ORM\Id
@@ -18,4 +18,9 @@ class CM extends User
      * @ORM\Column(type="integer")
      */
     
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 }
