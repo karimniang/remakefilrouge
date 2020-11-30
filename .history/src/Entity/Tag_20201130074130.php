@@ -2,16 +2,14 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use App\Repository\TagRepository;
-use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource(
- *  routePrefix = "/admin",
  *  collectionOperations={
  *      "GET","POST"
  *  },
@@ -27,20 +25,18 @@ class Tag
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"groupe_tag:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"groupe_tag:read"})
      */
     private $libelle;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $deleted = false;
+    private $deleted;
 
     /**
      * @ORM\ManyToMany(targetEntity=GroupeTag::class, mappedBy="tags")

@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
- *  routePrefix = "/admin",
+ *  routePrefix = "/admin"
  *  collectionOperations={
  *      "GET","POST"
  *  },

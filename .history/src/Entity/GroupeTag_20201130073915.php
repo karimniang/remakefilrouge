@@ -2,45 +2,14 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use App\Repository\GroupeTagRepository;
-use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\GroupeTagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource(
- *  routePrefix = "/admin",
- *  collectionOperations={
- *      "GET"={
- *          "normalization_context"={"groups"={"groupe_tag:read"}}
- *      },
- *      "post_groupe_tag"={
- *         "method"="POST",
- *         "path"="/groupe_tags",
- *         "route_name"="add_groupe_tag",
- *         "denormalization_context"={"groups"={"groupe_tag:write"}}
- *      }
- *  },
- *  itemOperations={
- *      "GET"={
- *          "normalization_context"={"groups"={"groupe_tag:read"}}
- *      },
- *      "put_groupe_tag"={
- *         "method"="PUT",
- *         "path"="/groupe_tags/{id}",
- *         "route_name"="edit_groupe_tag",
- *         "denormalization_context"={"groups"={"groupe_tag:write"}}
- *     }
- *  }
- * )
- * @UniqueEntity(
- *  fields={"libelle"},
- *  message="Le libelle existe déjà."
- * )
+ * @ApiResource()
  * @ORM\Entity(repositoryClass=GroupeTagRepository::class)
  */
 class GroupeTag
@@ -49,32 +18,26 @@ class GroupeTag
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"groupe_tag:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"groupe_tag:read","groupe_tag:write"})
-     * @Assert\NotBlank(message="Le libelle est obligatoire.")
      */
     private $libelle;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"groupe_tag:read","groupe_tag:write"})
-     * @Assert\NotBlank(message="La description est obligatoire.")
      */
     private $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $deleted = false;
+    private $deleted;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="groupeTags", cascade={"persist"})
-     * @Groups({"groupe_tag:read"})
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="groupeTags")
      */
     private $tags;
 

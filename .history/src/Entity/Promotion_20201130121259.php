@@ -8,8 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource(
@@ -28,10 +26,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *  }
  * )
  * @ORM\Entity(repositoryClass=PromotionRepository::class)
- * @UniqueEntity(
- *  fields={"titre"},
- *  message="Ce titre existe déjà"
- * )
  */
 class Promotion
 {
@@ -45,43 +39,36 @@ class Promotion
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"promotion:write"})
-     * @Assert\NotBlank(message="Le titre est requis.")
      */
     private $titre;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"promotion:write"})
-     * @Assert\NotBlank(message="La description est requise.")
-     * 
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"promotion:write"})
-     * @Assert\NotBlank(message="Le lieu est requis.")
      */
     private $lieu;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"promotion:write"})
-     * @Assert\NotBlank(message="Le reference est requis.")
      */
     private $referenceAgate;
 
     /**
      * @ORM\Column(type="date")
      * @Groups({"promotion:write"})
-     * @Assert\NotBlank(message="La date de debut est requise.")
      */
     private $dateDebut;
 
     /**
      * @ORM\Column(type="date")
      * @Groups({"promotion:write"})
-     * @Assert\NotBlank(message="Le date de fin est requise.")
      */
     private $dateFin;
 
@@ -93,14 +80,12 @@ class Promotion
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"promotion:write"})
-     * @Assert\NotBlank(message="La langue est requise.")
      */
     private $langue;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"promotion:write"})
-     * @Assert\NotBlank(message="La fabrique est requise.")
      */
     private $fabrique;
 

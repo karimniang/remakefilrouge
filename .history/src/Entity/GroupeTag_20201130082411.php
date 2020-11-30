@@ -8,8 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource(
@@ -37,10 +35,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     }
  *  }
  * )
- * @UniqueEntity(
- *  fields={"libelle"},
- *  message="Le libelle existe déjà."
- * )
  * @ORM\Entity(repositoryClass=GroupeTagRepository::class)
  */
 class GroupeTag
@@ -55,25 +49,23 @@ class GroupeTag
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"groupe_tag:read","groupe_tag:write"})
-     * @Assert\NotBlank(message="Le libelle est obligatoire.")
+     * @Groups({"groupe_tag:read"})
      */
     private $libelle;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"groupe_tag:read","groupe_tag:write"})
-     * @Assert\NotBlank(message="La description est obligatoire.")
+     * @Groups({"groupe_tag:read"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $deleted = false;
+    private $deleted;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="groupeTags", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="groupeTags")
      * @Groups({"groupe_tag:read"})
      */
     private $tags;

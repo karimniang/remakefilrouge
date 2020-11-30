@@ -2,36 +2,22 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use App\Repository\PromotionRepository;
-use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\PromotionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource(
- *  routePrefix= "/admin",
  *  collectionOperations={
- *      "add_promotion" = {
- *          "method"="POST",
- *          "path"="/promotions",
- *          "route_name"="add_promotion"
- *      },
- *      "GET"
+ *      "POST"
  *  },
  *  itemOperations={
- *      "GET",
- *      "PUT"
+ *      "GET"
  *  }
  * )
  * @ORM\Entity(repositoryClass=PromotionRepository::class)
- * @UniqueEntity(
- *  fields={"titre"},
- *  message="Ce titre existe déjà"
- * )
  */
 class Promotion
 {
@@ -44,44 +30,31 @@ class Promotion
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"promotion:write"})
-     * @Assert\NotBlank(message="Le titre est requis.")
      */
     private $titre;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"promotion:write"})
-     * @Assert\NotBlank(message="La description est requise.")
-     * 
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"promotion:write"})
-     * @Assert\NotBlank(message="Le lieu est requis.")
      */
     private $lieu;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"promotion:write"})
-     * @Assert\NotBlank(message="Le reference est requis.")
      */
     private $referenceAgate;
 
     /**
      * @ORM\Column(type="date")
-     * @Groups({"promotion:write"})
-     * @Assert\NotBlank(message="La date de debut est requise.")
      */
     private $dateDebut;
 
     /**
      * @ORM\Column(type="date")
-     * @Groups({"promotion:write"})
-     * @Assert\NotBlank(message="Le date de fin est requise.")
      */
     private $dateFin;
 
@@ -92,15 +65,11 @@ class Promotion
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"promotion:write"})
-     * @Assert\NotBlank(message="La langue est requise.")
      */
     private $langue;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"promotion:write"})
-     * @Assert\NotBlank(message="La fabrique est requise.")
      */
     private $fabrique;
 
@@ -211,12 +180,12 @@ class Promotion
 
     public function getImage()
     {
-        return $this->image!=null?stream_get_contents($this->image):null;
+        return $this->image;
     }
 
     public function setImage($image): self
     {
-        $this->image = base64_encode($image);
+        $this->image = $image;
 
         return $this;
     }

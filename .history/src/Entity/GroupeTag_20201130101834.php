@@ -7,9 +7,8 @@ use App\Repository\GroupeTagRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
@@ -36,10 +35,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *         "denormalization_context"={"groups"={"groupe_tag:write"}}
  *     }
  *  }
- * )
- * @UniqueEntity(
- *  fields={"libelle"},
- *  message="Le libelle existe déjà."
  * )
  * @ORM\Entity(repositoryClass=GroupeTagRepository::class)
  */
@@ -73,7 +68,7 @@ class GroupeTag
     private $deleted = false;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="groupeTags", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="groupeTags")
      * @Groups({"groupe_tag:read"})
      */
     private $tags;

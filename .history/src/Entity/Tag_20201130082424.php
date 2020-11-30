@@ -11,7 +11,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
- *  routePrefix = "/admin",
  *  collectionOperations={
  *      "GET","POST"
  *  },
@@ -40,7 +39,7 @@ class Tag
     /**
      * @ORM\Column(type="boolean")
      */
-    private $deleted = false;
+    private $deleted;
 
     /**
      * @ORM\ManyToMany(targetEntity=GroupeTag::class, mappedBy="tags")
