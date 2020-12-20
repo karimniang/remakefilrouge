@@ -74,11 +74,10 @@ class AddUser
         return file_get_contents($filePath, $name . '.' . $fileType);
     }
 
-    public function updateInfoUser($request,$id)
+    public function updateInfoUser($entity,$request,$id)
     {
         //dd('');
         $data = $request->request->all();
-        //dd($data);
        
         //$aprenant = $repoApre->findOneByIdUser($user->getId());
         $user = $this->repoUser->find($id);
@@ -98,7 +97,7 @@ class AddUser
         }*/
         foreach ($data as $key => $value) {
             if (isset($key) || !empty($key)) {
-                if ($key != "_method" && $key != "id" ) {
+                if ($key != "_method") {
                     $toSet = "set".ucfirst(strtolower($key));
                     $user->$toSet($value);
                 }

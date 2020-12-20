@@ -35,8 +35,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *  itemOperations={
  *      "GET"={
  *          "normalization_context"={"groups"={"profil:read"}}
- *      },
- *      "DELETE"
+ *      }
  *  }
  * )
  * @ApiFilter(BooleanFilter::class, properties={"deleted"})
@@ -47,20 +46,20 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"profil:read"})
+     * @Groups=({"profil:read"})
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank(message="Le username est obligatoire.")
-     * @Groups({"profil:read"})
+     * @Groups=({"profil:read"})
      */
     private $username;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"profil:read"})
+     * @Groups=({"profil:read"})
      */
     private $roles = [];
 
@@ -88,32 +87,27 @@ class User implements UserInterface
     /**
      * @ORM\ManyToOne(targetEntity=UserProfil::class, inversedBy="users")
      * @Assert\NotBlank(message="Le profil est obligatoire.")
-     * @Groups({"profil:read"})
+     * @Groups=({"profil:read"})
      */
     private $profil;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups=({"profil:read"})
      */
     private $deleted = false;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:write","profil:read"})
+     * @Groups({"user:write"})
+     * @Groups=({"profil:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="blob", nullable=true)
-     * @Groups({"profil:read"})
      */
     private $avatar;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Groups({"user:write","profil:read"})
-     */
-    private $telephone;
 
     public function getId(): ?int
     {
@@ -267,17 +261,5 @@ class User implements UserInterface
         ->setTo($this->email)
         ->setBody("Bonjour votre password est : " . $password . " Et votre username " . $this->username);
         $mailer->send($msg);
-    }
-
-    public function getTelephone(): ?int
-    {
-        return $this->telephone;
-    }
-
-    public function setTelephone(?int $telephone): self
-    {
-        $this->telephone = $telephone;
-
-        return $this;
     }
 }

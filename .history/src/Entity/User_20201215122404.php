@@ -11,7 +11,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 
 
@@ -28,18 +27,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *      "get",
  *      "get_user_connected"={
  *          "method"="GET",
- *          "path"="/user/connected",
- *          "route_name"="get_user"
+ *          "path"="/user/connected"
  *      }
- *  },
- *  itemOperations={
- *      "GET"={
- *          "normalization_context"={"groups"={"profil:read"}}
- *      },
- *      "DELETE"
  *  }
  * )
- * @ApiFilter(BooleanFilter::class, properties={"deleted"})
+ * @ApiFilter(UserFilter::class)
  */
 class User implements UserInterface
 {
@@ -47,20 +39,17 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"profil:read"})
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank(message="Le username est obligatoire.")
-     * @Groups({"profil:read"})
      */
     private $username;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"profil:read"})
      */
     private $roles = [];
 
@@ -74,21 +63,20 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le prenom est obligatoire.")
-     * @Groups({"profil:read","user:write","promotion:read","promotion:read_all","promotion:read_formateur","promo_groupe_apprenants:read","groupe:read","apprenant_groupe:read"})
+     * @Groups({"promotion:read","promotion:read_all","promotion:read_formateur","promo_groupe_apprenants:read","groupe:read","apprenant_groupe:read"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le nom est obligatoire.")
-     * @Groups({"profil:read","user:write","promotion:read","promotion:read_all","promotion:read_formateur","promo_groupe_apprenants:read","groupe:read","apprenant_groupe:read"})
+     * @Groups({"promotion:read","promotion:read_all","promotion:read_formateur","promo_groupe_apprenants:read","groupe:read","apprenant_groupe:read"})
      */
     private $lastname;
 
     /**
      * @ORM\ManyToOne(targetEntity=UserProfil::class, inversedBy="users")
      * @Assert\NotBlank(message="Le profil est obligatoire.")
-     * @Groups({"profil:read"})
      */
     private $profil;
 
@@ -99,21 +87,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:write","profil:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="blob", nullable=true)
-     * @Groups({"profil:read"})
      */
     private $avatar;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Groups({"user:write","profil:read"})
-     */
-    private $telephone;
 
     public function getId(): ?int
     {
@@ -267,17 +247,5 @@ class User implements UserInterface
         ->setTo($this->email)
         ->setBody("Bonjour votre password est : " . $password . " Et votre username " . $this->username);
         $mailer->send($msg);
-    }
-
-    public function getTelephone(): ?int
-    {
-        return $this->telephone;
-    }
-
-    public function setTelephone(?int $telephone): self
-    {
-        $this->telephone = $telephone;
-
-        return $this;
     }
 }

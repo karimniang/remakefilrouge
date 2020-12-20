@@ -37,7 +37,7 @@ class AddUser
 
         $userTab = $request->request->all();
         //return new JsonResponse($userTab['lastname']);
-        //dd($userTab);
+        dd($userTab['telephone']);
         $username = strtolower(substr($userTab['lastname'],0,3)."123".explode('@',$userTab['email'])[0].substr($userTab['firstname'],0,3));
         //dd($username);
         if($this->repoUser->findBy(["username"=>$username])){
@@ -59,7 +59,7 @@ class AddUser
         }
 
 
-        //dd($user);
+            dd($user);
         $this->manager->persist($user);
         $this->manager->flush();
 

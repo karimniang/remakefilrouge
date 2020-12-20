@@ -38,30 +38,28 @@ class AddUser
         $userTab = $request->request->all();
         //return new JsonResponse($userTab['lastname']);
         //dd($userTab);
-        $username = strtolower(substr($userTab['lastname'],0,3)."123".explode('@',$userTab['email'])[0].substr($userTab['firstname'],0,3));
-        //dd($username);
-        if($this->repoUser->findBy(["username"=>$username])){
+        if($this->repoUser->findBy(["username"=>$userTab["lastname"] . $userTab["firstname"]])){
             return new JsonResponse("This username already existe", Response::HTTP_BAD_REQUEST, [], true);
         }
-        $avatar = $request->files->get('avatar');
-       
         
         $profil = $this->repoProfils->findBy(["libelle"=>strtolower(explode("\\", $entity)[2])]);
         //dd($profil);
         unset($userTab['profil']);
-        $user = $this->serializer->denormalize($userTab, $entity, true,["groups" => "user:write"]);
-        $user->setProfil($profil[0]);
-        $user->setPassword($this->encoder->encodePassword($user, 'pass_1234'));
-        $user->setUsername($username);
-        
+        $user = $this->serializer->denormalize($userTab, $entity, true);
+
+        $avatar = $request->files->get('avatar');
         if (!is_null($avatar)) {
             $user->setAvatar($this->uploadFile($avatar, "imageProfil"));
         }
+           
+        $user->setProfil($profil[0]);
+        $user->setPassword($this->encoder->encodePassword($user, 'pass_1234'));
+        $user->setUsername($userTab["lastname"] . $userTab["firstname"]);
 
 
         //dd($user);
-        $this->manager->persist($user);
-        $this->manager->flush();
+        //$this->manager->persist($user);
+        //$this->manager->flush();
 
         return new JsonResponse("success", Response::HTTP_CREATED, [], true);
     }
@@ -74,11 +72,9 @@ class AddUser
         return file_get_contents($filePath, $name . '.' . $fileType);
     }
 
-    public function updateInfoUser($request,$id)
+    public function updateInfoUser($entity,$request,$id)
     {
-        //dd('');
         $data = $request->request->all();
-        //dd($data);
        
         //$aprenant = $repoApre->findOneByIdUser($user->getId());
         $user = $this->repoUser->find($id);
@@ -98,7 +94,7 @@ class AddUser
         }*/
         foreach ($data as $key => $value) {
             if (isset($key) || !empty($key)) {
-                if ($key != "_method" && $key != "id" ) {
+                if ($key != "_method") {
                     $toSet = "set".ucfirst(strtolower($key));
                     $user->$toSet($value);
                 }
@@ -107,7 +103,7 @@ class AddUser
         
         
         //dd($user);
-        $this->manager->flush();
+        //$this->manager->flush();
         $reponseJon = $this->serializer->serialize(["response"=>"Success Updating"],'json');
         return new JsonResponse($reponseJon, Response::HTTP_OK, [], true);
     }

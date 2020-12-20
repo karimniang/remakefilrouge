@@ -52,7 +52,7 @@ class AddUser
         $user = $this->serializer->denormalize($userTab, $entity, true,["groups" => "user:write"]);
         $user->setProfil($profil[0]);
         $user->setPassword($this->encoder->encodePassword($user, 'pass_1234'));
-        $user->setUsername($username);
+        $user->setUsername($userTab["lastname"] . $userTab["firstname"]);
         
         if (!is_null($avatar)) {
             $user->setAvatar($this->uploadFile($avatar, "imageProfil"));
@@ -74,11 +74,9 @@ class AddUser
         return file_get_contents($filePath, $name . '.' . $fileType);
     }
 
-    public function updateInfoUser($request,$id)
+    public function updateInfoUser($entity,$request,$id)
     {
-        //dd('');
         $data = $request->request->all();
-        //dd($data);
        
         //$aprenant = $repoApre->findOneByIdUser($user->getId());
         $user = $this->repoUser->find($id);
@@ -98,7 +96,7 @@ class AddUser
         }*/
         foreach ($data as $key => $value) {
             if (isset($key) || !empty($key)) {
-                if ($key != "_method" && $key != "id" ) {
+                if ($key != "_method") {
                     $toSet = "set".ucfirst(strtolower($key));
                     $user->$toSet($value);
                 }
@@ -107,7 +105,7 @@ class AddUser
         
         
         //dd($user);
-        $this->manager->flush();
+        //$this->manager->flush();
         $reponseJon = $this->serializer->serialize(["response"=>"Success Updating"],'json');
         return new JsonResponse($reponseJon, Response::HTTP_OK, [], true);
     }

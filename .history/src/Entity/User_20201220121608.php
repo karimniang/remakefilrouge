@@ -35,8 +35,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *  itemOperations={
  *      "GET"={
  *          "normalization_context"={"groups"={"profil:read"}}
- *      },
- *      "DELETE"
+ *      }
  *  }
  * )
  * @ApiFilter(BooleanFilter::class, properties={"deleted"})

@@ -11,27 +11,25 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @Route("/api")
  */
-class CmController extends AbstractController
+class ApprenantController extends AbstractController
 {
-    
-    /**
-     * @Route("/admin/cms", name="add_cm", methods ="POST")
-     */
-    public function addCm(AddUser $addUser,Request $request)
-    { $user = $this->getUser();
 
-        return $addUser->addUser("App\Entity\CM", $request, $user);
+
+    /**
+     * @Route("/admin/apprenants", name="add_apprenant", methods ="POST")
+     */
+    public function addApprenant(AddUser $addUser,Request $request)
+    {
+        $user = $this->getUser();
+        return $addUser->addUser("App\Entity\Apprenant", $request, $user);
     }
 
     /**
-     * @Route("/admin/cms/{id}", name="put_cm", methods ="PUT")
+     * @Route("/admin/apprenants/{id}", name="put_apprenant", methods ="POST")
      */
     public function putAdd(AddUser $addUser,Request $request, $id)
     {
-        return $addUser->updateInfoUser("App\Entity\CM", $request, $id);
+        return $addUser->updateInfoUser($request, $id);
     }
-
-   
-
     
 }

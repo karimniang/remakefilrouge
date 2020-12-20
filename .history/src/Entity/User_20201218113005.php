@@ -35,8 +35,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *  itemOperations={
  *      "GET"={
  *          "normalization_context"={"groups"={"profil:read"}}
- *      },
- *      "DELETE"
+ *      }
  *  }
  * )
  * @ApiFilter(BooleanFilter::class, properties={"deleted"})
@@ -105,15 +104,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="blob", nullable=true)
-     * @Groups({"profil:read"})
      */
     private $avatar;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Groups({"user:write","profil:read"})
-     */
-    private $telephone;
 
     public function getId(): ?int
     {
@@ -267,17 +259,5 @@ class User implements UserInterface
         ->setTo($this->email)
         ->setBody("Bonjour votre password est : " . $password . " Et votre username " . $this->username);
         $mailer->send($msg);
-    }
-
-    public function getTelephone(): ?int
-    {
-        return $this->telephone;
-    }
-
-    public function setTelephone(?int $telephone): self
-    {
-        $this->telephone = $telephone;
-
-        return $this;
     }
 }

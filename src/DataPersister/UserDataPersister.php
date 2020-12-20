@@ -2,13 +2,13 @@
 
 namespace App\DataPersister;
 
-use App\Entity\UserProfil;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
+use App\Entity\User;
 
-class ProfilDataPersister implements DataPersisterInterface
+class UserDataPersister implements DataPersisterInterface
 {
 
     private $entityManager;
@@ -19,7 +19,7 @@ class ProfilDataPersister implements DataPersisterInterface
     public function supports($data): bool
     {
         // TODO: Implement supports() method.
-        return $data instanceof UserProfil;
+        return $data instanceof User;
     }
 
     public function persist($data)
@@ -33,11 +33,11 @@ class ProfilDataPersister implements DataPersisterInterface
     {
         // TODO: Implement remove() method.
         $data->setDeleted(true);
-        if (!empty($data->getUsers())) {
-            foreach ($data->getUsers() as $user) {
-                $user->setDeleted(true);
-            }
-        }
+        // if (!empty($data->getUsers())) {
+        //     foreach ($data->getUsers() as $user) {
+        //         $user->setDeleted(true);
+        //     }
+        // }
         
         $this->entityManager->flush();
     }

@@ -35,8 +35,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *  itemOperations={
  *      "GET"={
  *          "normalization_context"={"groups"={"profil:read"}}
- *      },
- *      "DELETE"
+ *      }
  *  }
  * )
  * @ApiFilter(BooleanFilter::class, properties={"deleted"})
@@ -110,7 +109,7 @@ class User implements UserInterface
     private $avatar;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"user:write","profil:read"})
      */
     private $telephone;

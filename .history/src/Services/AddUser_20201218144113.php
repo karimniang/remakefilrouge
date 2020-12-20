@@ -98,7 +98,7 @@ class AddUser
         }*/
         foreach ($data as $key => $value) {
             if (isset($key) || !empty($key)) {
-                if ($key != "_method" && $key != "id" ) {
+                if ($key != "_method") {
                     $toSet = "set".ucfirst(strtolower($key));
                     $user->$toSet($value);
                 }

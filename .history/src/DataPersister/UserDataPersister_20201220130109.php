@@ -2,13 +2,12 @@
 
 namespace App\DataPersister;
 
-use App\Entity\UserProfil;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 
-class ProfilDataPersister implements DataPersisterInterface
+class UserDataPersister implements DataPersisterInterface
 {
 
     private $entityManager;

@@ -59,7 +59,7 @@ class AddUser
         }
 
 
-        //dd($user);
+        dd($user);
         $this->manager->persist($user);
         $this->manager->flush();
 
