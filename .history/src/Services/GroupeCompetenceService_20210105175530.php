@@ -108,14 +108,14 @@ class GroupeCompetenceService
             $competencesBrutes[] = $value;
         }
         //dd($competencesBrutes);
-        $groupeCompetence = $this->updateLinkService->toAddedCompetence($competencesBrutes,$groupeCompetence,"competence",$this->repoCompetence);
+        $groupeCompetence = $this->updateLinkService->toAdded($competencesBrutes,$groupeCompetence,"competence",$this->repoCompetence);
         
         if (count($groupeCompetence->getCompetences())<1) {
             return new JsonResponse("Les libellés des compétences sont requis.", Response::HTTP_BAD_REQUEST, [], true);
         }
 
         //$this->manager->persist($groupeCompetence);
-        $this->manager->flush();
+        //$this->manager->flush();
         $GroupeCompetenceJson = $this->serializer->serialize($groupeCompetence, 'json');
         return new JsonResponse($GroupeCompetenceJson, Response::HTTP_OK, [], true);
 

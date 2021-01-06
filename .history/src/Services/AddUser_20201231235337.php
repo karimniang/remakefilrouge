@@ -76,9 +76,10 @@ class AddUser
 
     public function updateInfoUser($request,$id)
     {
-        //dd('');
+        
         $data = $request->request->all();
-        //dd($data);
+        return new JsonResponse("Success Updating", Response::HTTP_OK, [], true);
+
        
         //$aprenant = $repoApre->findOneByIdUser($user->getId());
         $user = $this->repoUser->find($id);

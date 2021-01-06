@@ -130,60 +130,44 @@ class CompetenceService
 
         $tabLibelle = [];
         if (isset($data['niveaux']) && !empty($data['niveaux'])) {
-
-            if (count($competence->getNiveaux()) != 0) {
-                foreach ($competence->getNiveaux() as $key => $value) {
-                    // $competence->removeNiveau($value);
-                    // $this->manager->remove($value);
-                    foreach ($data['niveaux'] as $keyData => $val) {
-                        if (!empty($val['libelle']) && !empty($val["groupeAction"]) && !empty($val["critereEvaluation"])) {
-                            if ($key === $keyData) {
-                                $value->setLibelle($val['libelle']);
-                                $value->setGroupeAction($val["groupeAction"]);
-                                $value->setCritereEvaluation($val["critereEvaluation"]);
-                            }
+            foreach ($competence->getNiveaux() as $key => $value) {
+                $competence->removeNiveau($value);
+                $this->manager->remove($value);
+                // foreach ($data['niveaux'] as $keyData => $val) {
+                //     if (!empty($val['libelle']) && !empty($val["groupeAction"]) && !empty($val["critereEvaluation"])) {
+                //        if ($key === $keyData) {
+                //             $value->setLibelle($val['libelle']);
+                //             $value->setGroupeAction($val["groupeAction"]);
+                //             $value->setCritereEvaluation($val["critereEvaluation"]);
+                //        }
+                //     }
+                // }
+            }
+            foreach ($data['niveaux'] as $value) {
+                if (!empty($value['libelle']) && !empty($value["groupeAction"]) && !empty($value["critereEvaluation"])) {
+                    $niveau = $this->repoNiveau->findBy(array('libelle' => $value['libelle']));
+                    if ($niveau) {
+                        $competence->addNiveau($niveau[0]);
+                    } else {
+                        if (!in_array($value['libelle'], $tabLibelle)) {
+                            $tabLibelle[] = $value['libelle'];
+                            $niveau = new NiveauEvaluation();
+                            $niveau->setLibelle($value['libelle']);
+                            $niveau->setGroupeAction($value["groupeAction"]);
+                            $niveau->setCritereEvaluation($value["critereEvaluation"]);
+                            $competence->addNiveau($niveau);
                         }
                     }
-                }
-            } else {
-                foreach ($data['niveaux'] as $valNew) {
-                    if (!in_array($valNew['libelle'], $tabLibelle)) {
-                        $tabLibelle[] = $valNew['libelle'];
-                        $niveau = new NiveauEvaluation();
-                        $niveau->setLibelle($valNew['libelle']);
-                        $niveau->setGroupeAction($valNew["groupeAction"]);
-                        $niveau->setCritereEvaluation($valNew["critereEvaluation"]);
-                        $competence->addNiveau($niveau);
-                    }
+                    // if (!in_array($value['libelle'], $tabLibelle)) {
+                    //     $tabLibelle[] = $value['libelle'];
+                    //     $niveau = new NiveauEvaluation();
+                    //     $niveau->setLibelle($value['libelle']);
+                    //     $niveau->setGroupeAction($value["groupeAction"]);
+                    //     $niveau->setCritereEvaluation($value["critereEvaluation"]);
+                    //     $competence->addNiveau($niveau);
+                    // }
                 }
             }
-
-
-            // foreach ($data['niveaux'] as $value) {
-            //     if (!empty($value['libelle']) && !empty($value["groupeAction"]) && !empty($value["critereEvaluation"])) {
-            //         // $niveau = $this->repoNiveau->findBy(array('libelle' => $value['libelle']));
-            //         // if ($niveau) {
-            //         //     $competence->addNiveau($niveau[0]);
-            //         // } else {
-            //         //     if (!in_array($value['libelle'], $tabLibelle)) {
-            //         //         $tabLibelle[] = $value['libelle'];
-            //         //         $niveau = new NiveauEvaluation();
-            //         //         $niveau->setLibelle($value['libelle']);
-            //         //         $niveau->setGroupeAction($value["groupeAction"]);
-            //         //         $niveau->setCritereEvaluation($value["critereEvaluation"]);
-            //         //         $competence->addNiveau($niveau);
-            //         //     }
-            //         // }
-            //         if (!in_array($value['libelle'], $tabLibelle)) {
-            //             $tabLibelle[] = $value['libelle'];
-            //             $niveau = new NiveauEvaluation();
-            //             $niveau->setLibelle($value['libelle']);
-            //             $niveau->setGroupeAction($value["groupeAction"]);
-            //             $niveau->setCritereEvaluation($value["critereEvaluation"]);
-            //             $competence->addNiveau($niveau);
-            //         }
-            //     }
-            // }
         }
 
         if (count($competence->getNiveaux()) != 3) {

@@ -4,13 +4,11 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReferentielRepository;
-use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -56,8 +54,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *  }
  * )
  * @ORM\Entity(repositoryClass=ReferentielRepository::class)
- * 
- * @ApiFilter(BooleanFilter::class, properties={"deleted"})
  */
 class Referentiel
 {

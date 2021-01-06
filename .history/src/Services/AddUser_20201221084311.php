@@ -106,9 +106,9 @@ class AddUser
         }
         
         
-        //dd($user);
+        dd($user);
         $this->manager->flush();
         $reponseJon = $this->serializer->serialize(["response"=>"Success Updating"],'json');
-        return new JsonResponse("Success Updating", Response::HTTP_OK, [], true);
+        return new JsonResponse($reponseJon, Response::HTTP_OK, [], true);
     }
 }

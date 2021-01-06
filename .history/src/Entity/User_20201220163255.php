@@ -25,9 +25,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *  routePrefix="/admin",
  *  attributes={"security"="is_granted('ROLE_ADMIN')"},
  *  collectionOperations={
- *      "get"={
- *          "normalization_context"={"groups"={"user_all:read"}}
- *      },
+ *      "get",
  *      "get_user_connected"={
  *          "method"="GET",
  *          "path"="/user/connected",
@@ -49,20 +47,20 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"profil:read","info:profil","user_all:read"})
+     * @Groups({"profil:read","info:profil"})
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank(message="Le username est obligatoire.")
-     * @Groups({"profil:read","info:profil","user_all:read"})
+     * @Groups({"profil:read","info:profil"})
      */
     private $username;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"profil:read","info:profil","user_all:read"})
+     * @Groups({"profil:read","info:profil"})
      */
     private $roles = [];
 
@@ -76,21 +74,21 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le prenom est obligatoire.")
-     * @Groups({"user_all:read","profil:read","info:profil","user:write","promotion:read","promotion:read_all","promotion:read_formateur","promo_groupe_apprenants:read","groupe:read","apprenant_groupe:read"})
+     * @Groups({"profil:read","info:profil","user:write","promotion:read","promotion:read_all","promotion:read_formateur","promo_groupe_apprenants:read","groupe:read","apprenant_groupe:read"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le nom est obligatoire.")
-     * @Groups({"user_all:read","profil:read","info:profil","user:write","promotion:read","promotion:read_all","promotion:read_formateur","promo_groupe_apprenants:read","groupe:read","apprenant_groupe:read"})
+     * @Groups({"profil:read","info:profil","user:write","promotion:read","promotion:read_all","promotion:read_formateur","promo_groupe_apprenants:read","groupe:read","apprenant_groupe:read"})
      */
     private $lastname;
 
     /**
      * @ORM\ManyToOne(targetEntity=UserProfil::class, inversedBy="users")
      * @Assert\NotBlank(message="Le profil est obligatoire.")
-     * @Groups({"user_all:read","profil:read"})
+     * @Groups({"profil:read"})
      */
     private $profil;
 
@@ -101,19 +99,19 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user_all:read","user:write","profil:read","info:profil"})
+     * @Groups({"user:write","profil:read","info:profil"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="blob", nullable=true)
-     * @Groups({"user_all:read","profil:read","info:profil"})
+     * @Groups({"profil:read","info:profil"})
      */
     private $avatar;
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @Groups({"user_all:read","user:write","profil:read","info:profil"})
+     * @Groups({"user:write","profil:read","info:profil"})
      */
     private $telephone;
 

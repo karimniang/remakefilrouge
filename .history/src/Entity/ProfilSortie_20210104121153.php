@@ -7,7 +7,6 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use App\Repository\ProfilSortieRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**

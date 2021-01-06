@@ -66,8 +66,8 @@ class GroupeCompetenceService
             return new JsonResponse("Une compétence est requise pour créer un groupe de compétence.", Response::HTTP_BAD_REQUEST, [], true);
         }
         //dd($groupeCompetence);
-        $this->manager->persist($groupeCompetence);
-        $this->manager->flush();
+        //$this->manager->persist($groupeCompetence);
+        //$this->manager->flush();
         return new JsonResponse("Groupe Competence added successfulled", Response::HTTP_CREATED, [], true);
     }
 
@@ -97,24 +97,22 @@ class GroupeCompetenceService
                 }
             }
         }  
-        //return new JsonResponse("Groupe Competence added successfulled", Response::HTTP_CREATED, [], true);
-
         if (count($data['competences']) < 1) {
             return new JsonResponse("Une compétence est requise.", Response::HTTP_BAD_REQUEST, [], true);
         }
 
         
         foreach ($data['competences'] as $value) {
-            $competencesBrutes[] = $value;
+            $competencesBrutes[] = $value['libelle'];
         }
         //dd($competencesBrutes);
-        $groupeCompetence = $this->updateLinkService->toAddedCompetence($competencesBrutes,$groupeCompetence,"competence",$this->repoCompetence);
+        $groupeCompetence = $this->updateLinkService->toAdded($competencesBrutes,$groupeCompetence,"competence",$this->repoCompetence);
         
         if (count($groupeCompetence->getCompetences())<1) {
             return new JsonResponse("Les libellés des compétences sont requis.", Response::HTTP_BAD_REQUEST, [], true);
         }
 
-        //$this->manager->persist($groupeCompetence);
+        $this->manager->persist($groupeCompetence);
         $this->manager->flush();
         $GroupeCompetenceJson = $this->serializer->serialize($groupeCompetence, 'json');
         return new JsonResponse($GroupeCompetenceJson, Response::HTTP_OK, [], true);

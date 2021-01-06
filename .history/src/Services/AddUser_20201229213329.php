@@ -60,8 +60,8 @@ class AddUser
 
 
         //dd($user);
-        $this->manager->persist($user);
-        $this->manager->flush();
+        //$this->manager->persist($user);
+        //$this->manager->flush();
 
         return new JsonResponse("success", Response::HTTP_CREATED, [], true);
     }
@@ -109,6 +109,6 @@ class AddUser
         //dd($user);
         $this->manager->flush();
         $reponseJon = $this->serializer->serialize(["response"=>"Success Updating"],'json');
-        return new JsonResponse("Success Updating", Response::HTTP_OK, [], true);
+        return new JsonResponse($reponseJon, Response::HTTP_OK, [], true);
     }
 }

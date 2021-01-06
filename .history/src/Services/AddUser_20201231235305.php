@@ -76,7 +76,7 @@ class AddUser
 
     public function updateInfoUser($request,$id)
     {
-        //dd('');
+        return new JsonResponse("Success Updating", Response::HTTP_OK, [], true);
         $data = $request->request->all();
         //dd($data);
        

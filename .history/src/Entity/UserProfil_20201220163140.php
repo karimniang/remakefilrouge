@@ -47,14 +47,14 @@ class UserProfil
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"user_all:read","profil:read","info:profil"})
+     * @Groups({"profil:read","info:profil"})
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le libellé est obligatoire.")
-     * @Groups({"user_all:read","profil:read","info:profil"})
+     * @Groups({"profil:read","info:profil"})
      */
     private $libelle;
 

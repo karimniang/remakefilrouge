@@ -105,7 +105,7 @@ class GroupeCompetenceService
 
         
         foreach ($data['competences'] as $value) {
-            $competencesBrutes[] = $value;
+            $competencesBrutes[] = $value['libelle'];
         }
         //dd($competencesBrutes);
         $groupeCompetence = $this->updateLinkService->toAddedCompetence($competencesBrutes,$groupeCompetence,"competence",$this->repoCompetence);
@@ -115,7 +115,7 @@ class GroupeCompetenceService
         }
 
         //$this->manager->persist($groupeCompetence);
-        $this->manager->flush();
+        //$this->manager->flush();
         $GroupeCompetenceJson = $this->serializer->serialize($groupeCompetence, 'json');
         return new JsonResponse($GroupeCompetenceJson, Response::HTTP_OK, [], true);
 

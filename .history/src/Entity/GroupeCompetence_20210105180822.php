@@ -52,12 +52,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *          "method"="PUT",
  *          "path"="/grpecompetences/{id}/{action}",
  *          "route_name"="put_groupe_competence"
- *      },
- *      "DELETE"={
- *          "path"="/grpecompetences/{id}",
- *          "security"="is_granted('GROUPE_VIEW', object)",
- *          "security_message"="Vous n'avez pas accés à ces informations."
- *      }
+ *     },
+ *      "DELETE"
  *  }
  * )
  * @UniqueEntity(

@@ -181,7 +181,7 @@ class Promotion
 
     /**
      * @ORM\ManyToMany(targetEntity=Referentiel::class, inversedBy="promotions")
-     * @Groups({"promotion:read","promotion:read_all_ref","promotion:read_formateur","promo_groupe_apprenants:read","groupe:read"})
+     * @Groups({"promotion:read_all_ref","promotion:read_formateur","promo_groupe_apprenants:read","groupe:read"})
      */
     private $referentiels;
 

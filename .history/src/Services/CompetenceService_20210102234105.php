@@ -14,15 +14,14 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 
 
-class CompetenceService
-{
+class CompetenceService {
     private $manager;
     private $serializer;
     private $repoGroupeCom;
     private $repoCompetence;
     private $repoNiveau;
 
-    public function __construct(EntityManagerInterface $manager, NiveauEvaluationRepository $repoNiveau, CompetenceRepository $repoCompetence, SerializerInterface $serializer, GroupeCompetenceRepository $repoGroupeCom)
+    public function __construct(EntityManagerInterface $manager, NiveauEvaluationRepository $repoNiveau,CompetenceRepository $repoCompetence, SerializerInterface $serializer, GroupeCompetenceRepository $repoGroupeCom)
     {
         $this->manager = $manager;
         $this->serializer = $serializer;
@@ -31,9 +30,8 @@ class CompetenceService
         $this->repoNiveau = $repoNiveau;
     }
 
-    public function addCompetence($request)
-    {
-        $data = json_decode($request->getContent(), true);
+    public function addCompetence($request){
+        $data = json_decode( $request->getContent(),true);
         //dd($data);
 
         $groupeCompetence = $data["groupeCompetences"][0]["libelle"];
@@ -78,20 +76,20 @@ class CompetenceService
         $this->manager->persist($competence);
         $this->manager->flush();
         return new JsonResponse("Competence ajoutée", Response::HTTP_CREATED, [], true);
+    
     }
 
-    public function updateCompetence($request, $id)
-    {
-
+    public function updateCompetence($request, $id){
+        
         $data = json_decode($request->getContent(), true);
         $competence = $this->repoCompetence->find($id);
         //dd($competence->getGroupeCompetences()[0]);
-        if (is_null($competence)) {
+        if(is_null($competence)) {
             return new JsonResponse("Cette compétence n'existe pas.", Response::HTTP_BAD_REQUEST, [], true);
         }
 
         /**Archivage */
-        if (isset($data['deleted']) && $data['deleted']) {
+        if(isset($data['deleted']) && $data['deleted']) {
             $competence->setDeleted(true);
             $this->manager->flush();
             return new JsonResponse('Compétence archivé.', Response::HTTP_NO_CONTENT, [], true);
@@ -100,18 +98,18 @@ class CompetenceService
         if (isset($data['libelle']) && $data['libelle']) {
             $competence->setLibelle($data['libelle']);
         }
-
+        
 
         if (isset($data['niveaux']) && count($data['niveaux']) != 3) {
             return new JsonResponse("Trois niveaux d'évaluation sont requis.", Response::HTTP_BAD_REQUEST, [], true);
         }
 
-        $newLibelle = [];
+        $newLibelle =[];
         foreach ($competence->getGroupeCompetences() as $value) {
-            for ($i = 0; $i < count($data["groupeCompetences"]); $i++) {
+            for ($i=0; $i < count($data["groupeCompetences"]); $i++) { 
                 if ($data["groupeCompetences"][$i]['libelle'] != $value->getLibelle()) {
                     $competence->removeGroupeCompetence($value);
-                    $newLibelle[] = $data["groupeCompetences"][$i]['libelle'];
+                    $newLibelle[] =$data["groupeCompetences"][$i]['libelle'];
                 }
             }
         }
@@ -120,8 +118,8 @@ class CompetenceService
             $grpComp = $this->repoGroupeCom->findBy(array('libelle' => $newGroupe[$i]));
             if ($grpComp) {
                 $competence->addGroupeCompetence($grpComp[0]);
-            } else {
-                return new JsonResponse("Le groupe de compétence ¦¦" . $newGroupe[$i] . "¦¦ n'existe pas.", Response::HTTP_BAD_REQUEST, [], true);
+            }else {
+                return new JsonResponse("Le groupe de compétence ¦¦".$newGroupe[$i]."¦¦ n'existe pas.", Response::HTTP_BAD_REQUEST, [], true);
             }
         }
         if (count($competence->getGroupeCompetences()) < 1) {
@@ -130,68 +128,34 @@ class CompetenceService
 
         $tabLibelle = [];
         if (isset($data['niveaux']) && !empty($data['niveaux'])) {
-
-            if (count($competence->getNiveaux()) != 0) {
-                foreach ($competence->getNiveaux() as $key => $value) {
-                    // $competence->removeNiveau($value);
-                    // $this->manager->remove($value);
-                    foreach ($data['niveaux'] as $keyData => $val) {
-                        if (!empty($val['libelle']) && !empty($val["groupeAction"]) && !empty($val["critereEvaluation"])) {
-                            if ($key === $keyData) {
-                                $value->setLibelle($val['libelle']);
-                                $value->setGroupeAction($val["groupeAction"]);
-                                $value->setCritereEvaluation($val["critereEvaluation"]);
-                            }
+            foreach ($competence->getNiveaux() as $value) {
+                $competence->removeNiveau($value);
+            }
+            foreach ($data['niveaux'] as $value) {
+                if (!empty($value['libelle']) && !empty($value["groupeAction"]) && !empty($value["critereEvaluation"])) {
+                    $niveau = $this->repoNiveau->findBy(array('libelle' => $value['libelle']));
+                    if ($niveau) {
+                        $competence->addNiveau($niveau[0]);
+                    } else {
+                        if (!in_array($value['libelle'], $tabLibelle)) {
+                            $tabLibelle[] = $value['libelle'];
+                            $niveau = new NiveauEvaluation();
+                            $niveau->setLibelle($value['libelle']);
+                            $niveau->setGroupeAction($value["groupeAction"]);
+                            $niveau->setCritereEvaluation($value["critereEvaluation"]);
+                            $competence->addNiveau($niveau);
                         }
                     }
                 }
-            } else {
-                foreach ($data['niveaux'] as $valNew) {
-                    if (!in_array($valNew['libelle'], $tabLibelle)) {
-                        $tabLibelle[] = $valNew['libelle'];
-                        $niveau = new NiveauEvaluation();
-                        $niveau->setLibelle($valNew['libelle']);
-                        $niveau->setGroupeAction($valNew["groupeAction"]);
-                        $niveau->setCritereEvaluation($valNew["critereEvaluation"]);
-                        $competence->addNiveau($niveau);
-                    }
-                }
             }
-
-
-            // foreach ($data['niveaux'] as $value) {
-            //     if (!empty($value['libelle']) && !empty($value["groupeAction"]) && !empty($value["critereEvaluation"])) {
-            //         // $niveau = $this->repoNiveau->findBy(array('libelle' => $value['libelle']));
-            //         // if ($niveau) {
-            //         //     $competence->addNiveau($niveau[0]);
-            //         // } else {
-            //         //     if (!in_array($value['libelle'], $tabLibelle)) {
-            //         //         $tabLibelle[] = $value['libelle'];
-            //         //         $niveau = new NiveauEvaluation();
-            //         //         $niveau->setLibelle($value['libelle']);
-            //         //         $niveau->setGroupeAction($value["groupeAction"]);
-            //         //         $niveau->setCritereEvaluation($value["critereEvaluation"]);
-            //         //         $competence->addNiveau($niveau);
-            //         //     }
-            //         // }
-            //         if (!in_array($value['libelle'], $tabLibelle)) {
-            //             $tabLibelle[] = $value['libelle'];
-            //             $niveau = new NiveauEvaluation();
-            //             $niveau->setLibelle($value['libelle']);
-            //             $niveau->setGroupeAction($value["groupeAction"]);
-            //             $niveau->setCritereEvaluation($value["critereEvaluation"]);
-            //             $competence->addNiveau($niveau);
-            //         }
-            //     }
-            // }
         }
-
+       
         if (count($competence->getNiveaux()) != 3) {
             return new JsonResponse("Le libellé, le groupe d'action et le critère d'évaluation d'un niveau sont requis.", Response::HTTP_BAD_REQUEST, [], true);
         }
 
-        $this->manager->persist($competence);
-        $this->manager->flush();
+        //$this->manager->persist($competence);
+        //$this->manager->flush();
         return new JsonResponse("Competence updating successfully", Response::HTTP_CREATED, [], true);
     }
 }

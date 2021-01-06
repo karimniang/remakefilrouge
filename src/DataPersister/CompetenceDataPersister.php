@@ -2,14 +2,11 @@
 
 namespace App\DataPersister;
 
-use App\Entity\UserProfil;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
-use App\Entity\ProfilSortie;
+use App\Entity\Competence;
 
-class ProfilSortieDataPersister implements DataPersisterInterface
+class CompetenceDataPersister implements DataPersisterInterface
 {
 
     private $entityManager;
@@ -20,25 +17,25 @@ class ProfilSortieDataPersister implements DataPersisterInterface
     public function supports($data): bool
     {
         // TODO: Implement supports() method.
-        return $data instanceof ProfilSortie;
+        return $data instanceof Competence;
     }
 
     public function persist($data)
     {
-        // TODO: Implement persist() method.
         $this->entityManager->persist($data);
         $this->entityManager->flush();
+        // TODO: Implement persist() method.
     }
 
     public function remove($data)
     {
         // TODO: Implement remove() method.
         $data->setDeleted(true);
-        /*if (!empty($data->getUsers())) {
-            foreach ($data->getUsers() as $user) {
-                $user->setDeleted(true);
-            }
-        }*/
+        // if (!empty($data->getUsers())) {
+        //     foreach ($data->getUsers() as $user) {
+        //         $user->setDeleted(true);
+        //     }
+        // }
         
         $this->entityManager->flush();
     }

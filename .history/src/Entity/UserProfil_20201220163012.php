@@ -26,7 +26,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *  itemOperations={
  *      "get"={
  *          "defaults"={"id"=null},
- *          "normalization_context"={"groups"={"info:profil"}}
+ *          "normalization_context"={"groups"={"info:user"}}
  *      },
  *      "put",
  *      "remove_profil"={
@@ -47,20 +47,20 @@ class UserProfil
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"user_all:read","profil:read","info:profil"})
+     * @Groups({"profil:read"})
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le libellé est obligatoire.")
-     * @Groups({"user_all:read","profil:read","info:profil"})
+     * @Groups({"profil:read"})
      */
     private $libelle;
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="profil")
-     * @Groups({"info:profil"})
+     * @ApiSubresource
      */
     private $users;
 
